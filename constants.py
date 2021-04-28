@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+DIRECTORY = 'data'
 FILE = 'PNs Consolidados ' + \
     datetime.now().strftime(r"%d-%m-%Y_%Hh%Mm%Ss") + '.xlsx'
-NAME_FILE = os.path.join(ROOT_DIR, FILE)
+NAME_FILE = os.path.join(ROOT_DIR, DIRECTORY, FILE)

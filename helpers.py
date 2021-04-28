@@ -1,6 +1,20 @@
 import pandas as pd
 from openpyxl.reader.excel import load_workbook
 from tkinter.filedialog import askopenfilename
+import os
+
+
+def check_directory(root_test, directory_test):
+    path_test = os.path.join(root_test, directory_test)
+    if os.path.isdir(path_test):
+        return
+    else:
+        try:
+            os.mkdir(path_test)
+        except OSError:
+            print("Creation of the directory data failed")
+            exit(1)
+        return
 
 
 def pn_consolidado_header(name_file):
@@ -21,7 +35,17 @@ def le_pn_ipran():
     tipo_pn = 'IPRAN'
     # Dados base orçamentária
     filename = askopenfilename()
-    df1 = pd.read_excel(filename, sheet_name='Relatorio 1')
+    head, tail = os.path.split(filename)
+    try:
+        tail.index('planonominal_atual_sem_cancelados_')
+    except:
+        print('Verifique se o primeiro arquivo aberto é o PN IPRAN sem cancelados!')
+        exit(1)
+    try:
+        df1 = pd.read_excel(filename, sheet_name='Relatorio 1')
+    except:
+        print('Verifique o arquivo aberto, aba Relatorio 1 não localizada!')
+        exit(1)
     df1['filtro'] = df1['Fabricante'].apply(lambda row: row.upper())
     df1 = df1[(df1['filtro'] == "CISCO")]
     line_id = df1['linha_id'].to_list()
@@ -95,7 +119,17 @@ def le_pn_upgrade():
     tipo_pn = 'Upgrade'
     # Dados base orçamentária
     filename = askopenfilename()
-    df1 = pd.read_excel(filename, sheet_name='Relatorio 1')
+    head, tail = os.path.split(filename)
+    try:
+        tail.index('pn_upgrade_roteadores_')
+    except:
+        print('Verifique se o segundo arquivo aberto é o PN UPGRADE sem cancelados!')
+        exit(1)
+    try:
+        df1 = pd.read_excel(filename, sheet_name='Relatorio 1')
+    except:
+        print('Verifique o arquivo aberto, aba Relatorio 1 não localizada!')
+        exit(1)
     df1['filtro'] = df1['Integrador'].apply(lambda row: str(row).upper())
     df1 = df1[(df1['filtro'] == "PROMON")]
     line_id = df1['linha_id'].to_list()

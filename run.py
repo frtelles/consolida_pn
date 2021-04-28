@@ -3,6 +3,9 @@ import constants as c
 
 if __name__ == "__main__":
 
+    # check if data directory exists
+    check_directory(c.ROOT_DIR, c.DIRECTORY)
+
     pn_consolidado_header(c.NAME_FILE)
 
     tipo_pn, line_id, data_inc, regional, hostname, site, swap_de, projeto,\
